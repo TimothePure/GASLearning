@@ -5,13 +5,10 @@
 
 #include "AbilitySystem/GLAbilitySystemComponent.h"
 #include "AbilitySystem/GLAttributeSet.h"
+#include "Blueprint/WidgetTree.h"
 #include "Characters/GLBaseCharacter.h"
+#include "UI/GLAttributeWidget.h"
 
-
-UGLWidgetComponent::UGLWidgetComponent()
-{
-	PrimaryComponentTick.bCanEverTick = false;
-}
 
 void UGLWidgetComponent::BeginPlay()
 {
@@ -62,5 +59,25 @@ void UGLWidgetComponent::InitializeAttributeDelegate()
 
 void UGLWidgetComponent::BindToAttributeChanges()
 {
-	
+	for (const TTuple<FGameplayAttribute, FGameplayAttribute>& Pair : AttributeMap)
+	{
+		BindWidgetToAttributeChanges(GetUserWidgetObject() , Pair); // for checking the owned widget object
+		
+		GetUserWidgetObject()->WidgetTree->ForEachWidget([this, &Pair](UWidget* ChildWidget)
+		{
+			BindWidgetToAttributeChanges(ChildWidget, Pair);
+		});
+	}
+}
+
+void UGLWidgetComponent::BindWidgetToAttributeChanges(UWidget* WidgetObject, const TTuple<FGameplayAttribute, FGameplayAttribute>& Pair) const
+{
+	UGLAttributeWidget* AttributeWidget = Cast<UGLAttributeWidget>(WidgetObject);
+	if (!IsValid(AttributeWidget) || !AttributeWidget->MatchesAttributes(Pair)) return;
+		
+	AttributeWidget->OnAttributeChange(Pair, AttributeSet.Get());
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Key).AddLambda([this, AttributeWidget, Pair](const FOnAttributeChangeData& AttributeChangeData)
+	{
+		AttributeWidget->OnAttributeChange(Pair, AttributeSet.Get());
+	});
 }
