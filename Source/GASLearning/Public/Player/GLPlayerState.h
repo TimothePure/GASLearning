@@ -7,6 +7,7 @@
 #include "AbilitySystemInterface.h"
 #include "GLPlayerState.generated.h"
 
+class UAttributeSet;
 class UGLAbilitySystemComponent;
 
 UCLASS()
@@ -21,4 +22,7 @@ public:
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Abilities")
 	TObjectPtr<UGLAbilitySystemComponent> AbilitySystemComponent;
+	
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> AttributeSet;
 };

@@ -8,6 +8,7 @@
 
 
 class UGLAbilitySystemComponent;
+class UAttributeSet;
 
 UCLASS()
 class GASLEARNING_API AGLEnemyCharacter : public AGLBaseCharacter
@@ -24,4 +25,7 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UGLAbilitySystemComponent> AbilitySystemComponent;
+	
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> AttributeSet;
 };

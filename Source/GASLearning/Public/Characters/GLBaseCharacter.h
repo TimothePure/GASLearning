@@ -9,6 +9,7 @@
 
 class UGameplayAbility;
 class UAbilitySystemComponent;
+class UGameplayEffect;
 
 UCLASS(Abstract)
 class GASLEARNING_API AGLBaseCharacter : public ACharacter, public IAbilitySystemInterface
@@ -22,8 +23,12 @@ public:
 	
 protected:
 	void GiveStartupAbilities();
+	void InitializeAttributes() const;
 	
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	TSubclassOf<UGameplayEffect> InitializeAttributesEffect;
 };

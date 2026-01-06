@@ -3,6 +3,7 @@
 
 #include "GASLearning/Public/Player/GLPlayerState.h"
 #include "AbilitySystem/GLAbilitySystemComponent.h"
+#include "AbilitySystem/GLAttributeSet.h"
 
 AGLPlayerState::AGLPlayerState()
 {
@@ -11,6 +12,8 @@ AGLPlayerState::AGLPlayerState()
 	AbilitySystemComponent = CreateDefaultSubobject<UGLAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+	
+	AttributeSet = CreateDefaultSubobject<UGLAttributeSet>("AttributeSet");
 }
 
 UAbilitySystemComponent* AGLPlayerState::GetAbilitySystemComponent() const

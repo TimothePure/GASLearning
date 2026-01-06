@@ -54,6 +54,7 @@ void AGLPlayerCharacter::PossessedBy(AController* NewController)
 	
 	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
 	GiveStartupAbilities();
+	InitializeAttributes();
 }
 
 void AGLPlayerCharacter::OnRep_PlayerState()

@@ -4,6 +4,7 @@
 #include "Characters/GLEnemyCharacter.h"
 
 #include "AbilitySystem/GLAbilitySystemComponent.h"
+#include "AbilitySystem/GLAttributeSet.h"
 
 
 AGLEnemyCharacter::AGLEnemyCharacter()
@@ -13,6 +14,8 @@ AGLEnemyCharacter::AGLEnemyCharacter()
 	AbilitySystemComponent = CreateDefaultSubobject<UGLAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+	
+	AttributeSet = CreateDefaultSubobject<UGLAttributeSet>("AttributeSet");
 }
 
 UAbilitySystemComponent* AGLEnemyCharacter::GetAbilitySystemComponent() const
@@ -29,6 +32,7 @@ void AGLEnemyCharacter::BeginPlay()
 	if (HasAuthority())
 	{
 		GiveStartupAbilities();
+		InitializeAttributes();
 	}
 }
 
