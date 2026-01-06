@@ -2,13 +2,13 @@
 
 
 #include "GASLearning/Public/Player/GLPlayerState.h"
-#include "AbilitySystemComponent.h"
+#include "AbilitySystem/GLAbilitySystemComponent.h"
 
 AGLPlayerState::AGLPlayerState()
 {
 	SetNetUpdateFrequency(100.f);
 	
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>("AbilitySystemComponent");
+	AbilitySystemComponent = CreateDefaultSubobject<UGLAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 }

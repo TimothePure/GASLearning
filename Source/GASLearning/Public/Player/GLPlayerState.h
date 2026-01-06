@@ -7,7 +7,7 @@
 #include "AbilitySystemInterface.h"
 #include "GLPlayerState.generated.h"
 
-class UAbilitySystemComponent;
+class UGLAbilitySystemComponent;
 
 UCLASS()
 class GASLEARNING_API AGLPlayerState : public APlayerState, public IAbilitySystemInterface
@@ -20,5 +20,5 @@ public:
 	
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Abilities")
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	TObjectPtr<UGLAbilitySystemComponent> AbilitySystemComponent;
 };

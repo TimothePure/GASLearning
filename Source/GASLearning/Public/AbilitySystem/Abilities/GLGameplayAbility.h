@@ -15,6 +15,6 @@ class GASLEARNING_API UGLGameplayAbility : public UGameplayAbility
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Debug")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Debug") 
 	bool bDrawDebugs = false;
 };

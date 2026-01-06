@@ -7,7 +7,7 @@
 #include "GLEnemyCharacter.generated.h"
 
 
-class UAbilitySystemComponent;
+class UGLAbilitySystemComponent;
 
 UCLASS()
 class GASLEARNING_API AGLEnemyCharacter : public AGLBaseCharacter
@@ -23,5 +23,5 @@ protected:
 
 private:
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	TObjectPtr<UGLAbilitySystemComponent> AbilitySystemComponent;
 };

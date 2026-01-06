@@ -4,8 +4,18 @@ namespace GLTags
 {
 	namespace GLAbilities
 	{
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(ActivateOnGiven, "GLTags.GLAbilities.ActivateOnGiven", "Tag for abilities that should activate immediately once given.");
+		
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Primary, "GLTags.GLAbilities.Primary", "Tag for the Primary Ability");
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Secondary, "GLTags.GLAbilities.Secondary", "Tag for the Secondary Ability");
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Tertiary, "GLTags.GLAbilities.Tertiary", "Tag for the Tertiary Ability");
+	}
+	
+	namespace Events
+	{
+		namespace Enemy
+		{
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "GLTags.Events.Enemy.HitReact", "Tag for the enemy HitReact Event");
+		}
 	}
 }

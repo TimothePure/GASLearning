@@ -3,14 +3,14 @@
 
 #include "Characters/GLEnemyCharacter.h"
 
-#include "AbilitySystemComponent.h"
+#include "AbilitySystem/GLAbilitySystemComponent.h"
 
 
 AGLEnemyCharacter::AGLEnemyCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>("AbilitySystemComponent");
+	AbilitySystemComponent = CreateDefaultSubobject<UGLAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 }
