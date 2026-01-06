@@ -2,9 +2,12 @@
 
 
 #include "GASLearning/Public/Player/GLPlayerController.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "GameFramework/Character.h"
+#include "GameplayTags/GLTags.h"
 
 void AGLPlayerController::SetupInputComponent()
 {
@@ -27,6 +30,8 @@ void AGLPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::LookInput);
 	
 	EnhancedInputComponent->BindAction(PrimaryAction, ETriggerEvent::Started, this, &ThisClass::PrimaryInput);
+	EnhancedInputComponent->BindAction(SecondaryAction, ETriggerEvent::Started, this, &ThisClass::SecondaryInput);
+	EnhancedInputComponent->BindAction(TertiaryAction, ETriggerEvent::Started, this, &ThisClass::TertiaryInput);
 }
 
 void AGLPlayerController::JumpInput()
@@ -70,5 +75,23 @@ void AGLPlayerController::LookInput(const FInputActionValue& Value)
 
 void AGLPlayerController::PrimaryInput()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Cyan, TEXT("Primary Input"));	
+	ActivateAbility(GLTags::GLAbilities::Primary);
+}
+
+void AGLPlayerController::SecondaryInput()
+{
+	ActivateAbility(GLTags::GLAbilities::Secondary);
+}
+
+void AGLPlayerController::TertiaryInput()
+{
+	ActivateAbility(GLTags::GLAbilities::Tertiary);
+}
+
+void AGLPlayerController::ActivateAbility(const FGameplayTag& AbilityTag) const
+{
+	UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn());
+	if (!IsValid(ASC)) return;
+	
+	ASC->TryActivateAbilitiesByTag(AbilityTag.GetSingleTagContainer());
 }

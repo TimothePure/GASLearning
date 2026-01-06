@@ -3,6 +3,8 @@
 
 #include "GASLearning/Public/Characters/GLBaseCharacter.h"
 
+#include "AbilitySystemComponent.h"
+
 
 AGLBaseCharacter::AGLBaseCharacter()
 {
@@ -15,4 +17,15 @@ AGLBaseCharacter::AGLBaseCharacter()
 UAbilitySystemComponent* AGLBaseCharacter::GetAbilitySystemComponent() const
 {
 	return nullptr;
+}
+
+void AGLBaseCharacter::GiveStartupAbilities()
+{
+	if (!IsValid(GetAbilitySystemComponent())) return;
+	
+	for (const auto& Ability : StartupAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability);
+		GetAbilitySystemComponent()->GiveAbility(AbilitySpec);
+	}
 }

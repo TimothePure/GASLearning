@@ -9,6 +9,7 @@
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
+struct FGameplayTag;
 
 UCLASS()
 class GASLEARNING_API AGLPlayerController : public APlayerController
@@ -35,6 +36,12 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input|Abilities")
 	TObjectPtr<UInputAction> PrimaryAction;
 	
+	UPROPERTY(EditDefaultsOnly, Category = "Input|Abilities")
+	TObjectPtr<UInputAction> SecondaryAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input|Abilities")
+	TObjectPtr<UInputAction> TertiaryAction;
+	
 	void JumpInput();
 	void StopJumping();
 	
@@ -42,5 +49,9 @@ private:
 	void LookInput(const FInputActionValue& Value);
 	
 	void PrimaryInput();
+	void SecondaryInput();
+	void TertiaryInput();
+	
+	void ActivateAbility(const FGameplayTag& AbilityTag) const;
 };
 

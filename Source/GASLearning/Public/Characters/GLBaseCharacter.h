@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "GLBaseCharacter.generated.h"
 
+class UGameplayAbility;
 class UAbilitySystemComponent;
 
 UCLASS(Abstract)
@@ -18,4 +19,11 @@ public:
 	AGLBaseCharacter();
 	
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	
+protected:
+	void GiveStartupAbilities();
+	
+private:
+	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 };
