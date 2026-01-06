@@ -18,7 +18,7 @@ class GASLEARNING_API AGLEnemyCharacter : public AGLBaseCharacter
 public:
 	AGLEnemyCharacter();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	
+	virtual UAttributeSet* GetAttributeSet() const override;
 protected:
 	virtual void BeginPlay() override;
 

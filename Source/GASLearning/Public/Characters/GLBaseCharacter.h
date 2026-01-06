@@ -10,6 +10,9 @@
 class UGameplayAbility;
 class UAbilitySystemComponent;
 class UGameplayEffect;
+class UAttributeSet;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FASCInitialized, UAbilitySystemComponent*, ASC, UAttributeSet*, AS);
 
 UCLASS(Abstract)
 class GASLEARNING_API AGLBaseCharacter : public ACharacter, public IAbilitySystemInterface
@@ -20,6 +23,10 @@ public:
 	AGLBaseCharacter();
 	
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	virtual UAttributeSet* GetAttributeSet() const;
+	
+	UPROPERTY(BlueprintAssignable)
+	FASCInitialized OnASCInitialized;
 	
 protected:
 	void GiveStartupAbilities();

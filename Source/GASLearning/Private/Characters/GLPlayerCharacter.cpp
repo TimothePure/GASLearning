@@ -46,6 +46,14 @@ UAbilitySystemComponent* AGLPlayerCharacter::GetAbilitySystemComponent() const
 	return GLPlayerState->GetAbilitySystemComponent();
 }
 
+UAttributeSet* AGLPlayerCharacter::GetAttributeSet() const
+{
+	AGLPlayerState* GLPlayerState = Cast<AGLPlayerState>(GetPlayerState());
+	if (!IsValid(GLPlayerState)) return nullptr;
+	
+	return GLPlayerState->GetAttributeSet();
+}
+
 void AGLPlayerCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
@@ -53,6 +61,7 @@ void AGLPlayerCharacter::PossessedBy(AController* NewController)
 	if (!IsValid(GetAbilitySystemComponent()) || !HasAuthority()) return;
 	
 	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
+	OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
 	GiveStartupAbilities();
 	InitializeAttributes();
 }
@@ -64,5 +73,6 @@ void AGLPlayerCharacter::OnRep_PlayerState()
 	if (!IsValid(GetAbilitySystemComponent())) return;
 	
 	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
+	OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
 }
 

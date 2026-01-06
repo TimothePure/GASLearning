@@ -18,6 +18,7 @@ public:
 	AGLPlayerState();
 	
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 	
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Abilities")

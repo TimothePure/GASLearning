@@ -23,12 +23,19 @@ UAbilitySystemComponent* AGLEnemyCharacter::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
+UAttributeSet* AGLEnemyCharacter::GetAttributeSet() const
+{
+	return AttributeSet;
+}
+
 void AGLEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	if (!IsValid(GetAbilitySystemComponent())) return;
 	
 	GetAbilitySystemComponent()->InitAbilityActorInfo(this, this);
+	OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
+	
 	if (HasAuthority())
 	{
 		GiveStartupAbilities();
