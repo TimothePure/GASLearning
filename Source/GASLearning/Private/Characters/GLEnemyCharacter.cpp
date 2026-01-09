@@ -36,10 +36,14 @@ void AGLEnemyCharacter::BeginPlay()
 	GetAbilitySystemComponent()->InitAbilityActorInfo(this, this);
 	OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
 	
-	if (HasAuthority())
+	if (!HasAuthority()) return;
+	GiveStartupAbilities();
+	InitializeAttributes();
+	
+	UGLAttributeSet* GLAttributeSet = Cast<UGLAttributeSet>(GetAttributeSet());
+	if (IsValid(GLAttributeSet))
 	{
-		GiveStartupAbilities();
-		InitializeAttributes();
+		GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GLAttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
 	}
 }
 

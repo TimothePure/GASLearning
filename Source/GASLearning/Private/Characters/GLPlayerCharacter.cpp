@@ -64,6 +64,12 @@ void AGLPlayerCharacter::PossessedBy(AController* NewController)
 	OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
 	GiveStartupAbilities();
 	InitializeAttributes();
+	
+	UGLAttributeSet* GLAttributeSet = Cast<UGLAttributeSet>(GetAttributeSet());
+	if (IsValid(GLAttributeSet))
+	{
+		GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GLAttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
+	}
 }
 
 void AGLPlayerCharacter::OnRep_PlayerState()
@@ -74,5 +80,11 @@ void AGLPlayerCharacter::OnRep_PlayerState()
 	
 	GetAbilitySystemComponent()->InitAbilityActorInfo(GetPlayerState(), this);
 	OnASCInitialized.Broadcast(GetAbilitySystemComponent(), GetAttributeSet());
+	
+	UGLAttributeSet* GLAttributeSet = Cast<UGLAttributeSet>(GetAttributeSet());
+	if (IsValid(GLAttributeSet))
+	{
+		GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(GLAttributeSet->GetHealthAttribute()).AddUObject(this, &ThisClass::OnHealthChanged);
+	}
 }
 
