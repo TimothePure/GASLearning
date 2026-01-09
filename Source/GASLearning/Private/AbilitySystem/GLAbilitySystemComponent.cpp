@@ -33,6 +33,28 @@ void UGLAbilitySystemComponent::OnRep_ActivateAbilities()
 	}
 }
 
+void UGLAbilitySystemComponent::SetAbilityLevel(TSubclassOf<UGameplayAbility> AbilityClass, int32 NewLevel)
+{
+	if (!IsValid(GetAvatarActor()) || !GetAvatarActor()->HasAuthority()) return;
+	
+	if (FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromClass(AbilityClass))
+	{
+		AbilitySpec->Level = NewLevel;
+		MarkAbilitySpecDirty(*AbilitySpec);
+	}
+}
+
+void UGLAbilitySystemComponent::IncrementAbilityLevel(TSubclassOf<UGameplayAbility> AbilityClass, int32 LevelToAdd)
+{
+	if (!IsValid(GetAvatarActor()) || !GetAvatarActor()->HasAuthority()) return;
+	
+	if (FGameplayAbilitySpec* AbilitySpec = FindAbilitySpecFromClass(AbilityClass))
+	{
+		AbilitySpec->Level += LevelToAdd;
+		MarkAbilitySpecDirty(*AbilitySpec);
+	}
+}
+
 void UGLAbilitySystemComponent::HandleAutoActivatedAbility(const FGameplayAbilitySpec& AbilitySpec)
 {
 	for (const FGameplayTag& Tag : AbilitySpec.Ability->GetAssetTags())

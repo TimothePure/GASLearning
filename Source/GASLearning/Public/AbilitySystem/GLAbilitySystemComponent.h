@@ -18,6 +18,12 @@ public:
 	virtual void OnGiveAbility(FGameplayAbilitySpec& AbilitySpec) override;
 	virtual void OnRep_ActivateAbilities() override;
 	
+	UFUNCTION(BlueprintCallable, Category = "Abilities")
+	void SetAbilityLevel(TSubclassOf<UGameplayAbility> AbilityClass, int32 NewLevel);
+	
+	UFUNCTION(BlueprintCallable, Category = "Abilities")
+	void IncrementAbilityLevel(TSubclassOf<UGameplayAbility> AbilityClass, int32 LevelToAdd = 1);
+	
 private:
 	void HandleAutoActivatedAbility(const FGameplayAbilitySpec& AbilitySpec);
 };
