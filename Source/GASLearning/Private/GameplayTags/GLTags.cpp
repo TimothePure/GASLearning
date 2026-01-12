@@ -17,5 +17,9 @@ namespace GLTags
 		{
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "GLTags.Events.Enemy.HitReact", "Tag for the enemy HitReact Event");
 		}
+		namespace Player
+		{
+			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Primary, "GLTags.Events.Player.Primary", "Tag for the player Primary attack Event");
+		}
 	}
 }

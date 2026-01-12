@@ -4,8 +4,69 @@
 #include "AbilitySystem/Abilities/Player/GLPrimaryAbility.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "Abilities/Tasks/AbilityTask_WaitGameplayEvent.h"
 #include "Engine/OverlapResult.h"
 #include "GameplayTags/GLTags.h"
+#include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
+
+void UGLPrimaryAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, 
+	const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
+{
+	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	
+	if (AttackAnimMontages.Num() > 1)
+	{
+		if (FlipFlop())
+		{
+			MontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, FName(TEXT("AttackMontage")), AttackAnimMontages[0]);
+		} else
+		{
+			MontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, FName(TEXT("AttackMontage")), AttackAnimMontages[1]);
+		}
+	} else
+	{
+		
+		if (IsValid(AttackAnimMontages[0]))
+		{
+			MontageTask = UAbilityTask_PlayMontageAndWait::CreatePlayMontageAndWaitProxy(this, FName(TEXT("AttackMontage")), AttackAnimMontages[0]);
+		}
+	}
+	
+	if (MontageTask)
+	{
+		MontageTask->OnCompleted.AddDynamic(this, &ThisClass::OnMontageFinished);
+		MontageTask->OnCancelled.AddDynamic(this, &ThisClass::OnMontageFinished);
+		MontageTask->OnInterrupted.AddDynamic(this, &ThisClass::OnMontageFinished);
+		MontageTask->OnBlendOut.AddDynamic(this, &ThisClass::OnMontageFinished);
+		MontageTask->Activate();
+	}
+	
+	WaitEventTask = UAbilityTask_WaitGameplayEvent::WaitGameplayEvent(this, FGameplayTag(GLTags::Events::Player::Primary));
+	
+	if (WaitEventTask)
+	{
+		WaitEventTask->Activate();
+		WaitEventTask->EventReceived.AddDynamic(this, &ThisClass::OnGameplayEventReceived);
+	}
+}
+
+void UGLPrimaryAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+	const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+{
+	if (WaitEventTask)
+	{
+		WaitEventTask->EndTask();
+		WaitEventTask = nullptr;
+	}
+
+	if (MontageTask)
+	{
+		MontageTask->EndTask();
+		MontageTask = nullptr;
+	}
+	
+	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+}
 
 TArray<AActor*> UGLPrimaryAbility::HitBoxOverlapTest()
 {
@@ -56,8 +117,22 @@ void UGLPrimaryAbility::SendHitReactEventToActors(const TArray<AActor*>& HitActo
 	}
 }
 
-void UGLPrimaryAbility::DrawHitBoxOverlapDebugs(const TArray<FOverlapResult>& OverlapResults,
-                                                const FVector& HitBoxLocation) const
+void UGLPrimaryAbility::ApplyDamageEffectToActors(const TArray<AActor*>& HitActors)
+{
+	FGameplayAbilityTargetDataHandle TargetData;
+	FGameplayEffectSpecHandle EffectSpecHandle = MakeOutgoingGameplayEffectSpec(DamageEffect,  GetAbilityLevel());
+	
+	for (auto HitActor : HitActors)
+	{
+		FGameplayAbilityTargetData_ActorArray* Data = new FGameplayAbilityTargetData_ActorArray();
+		Data->TargetActorArray.Add(HitActor);
+		TargetData.Add(Data);
+	}
+	
+	ApplyGameplayEffectSpecToTarget(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, EffectSpecHandle, TargetData);
+}
+
+void UGLPrimaryAbility::DrawHitBoxOverlapDebugs(const TArray<FOverlapResult>& OverlapResults, const FVector& HitBoxLocation) const
 {
 	DrawDebugSphere(GetWorld(), HitBoxLocation, HitBoxRadius, 16, FColor::Red, false, 3.f);
 	
@@ -70,4 +145,21 @@ void UGLPrimaryAbility::DrawHitBoxOverlapDebugs(const TArray<FOverlapResult>& Ov
 			DrawDebugSphere(GetWorld(), DebugLocation, 30.f, 10, FColor::Green, false, 3.f);
 		}
 	}
+}
+
+void UGLPrimaryAbility::OnMontageFinished()
+{
+	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, false, false);
+}
+
+void UGLPrimaryAbility::OnGameplayEventReceived(FGameplayEventData Payload)
+{
+	TArray<AActor*> HitActors = HitBoxOverlapTest();
+	SendHitReactEventToActors(HitActors);
+	ApplyDamageEffectToActors(HitActors);
+}
+
+bool UGLPrimaryAbility::FlipFlop()
+{
+	return bFlipFlop = !bFlipFlop;
 }

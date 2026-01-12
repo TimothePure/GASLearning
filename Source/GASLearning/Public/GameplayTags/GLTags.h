@@ -20,5 +20,9 @@ namespace GLTags
 		{
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(HitReact);
 		}
+		namespace Player
+		{
+			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Primary);
+		}
 	}
 }
