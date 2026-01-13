@@ -15,8 +15,9 @@ class GASLEARNING_API UGLPrimaryAbility : public UGLGameplayAbility
 	GENERATED_BODY()
 	
 public:
+	UGLPrimaryAbility();
+	
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
-	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 	
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
 	TArray<AActor*> HitBoxOverlapTest();
@@ -26,6 +27,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
 	void ApplyDamageEffectToActors(const TArray<AActor*>& HitActors);
+
+protected:
+	virtual void ClearOngoingTasks() override;
 	
 private:
 	void DrawHitBoxOverlapDebugs(const TArray<FOverlapResult>& OverlapResults, const FVector& HitBoxLocation) const;

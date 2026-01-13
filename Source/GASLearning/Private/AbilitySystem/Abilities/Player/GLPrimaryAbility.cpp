@@ -9,6 +9,12 @@
 #include "GameplayTags/GLTags.h"
 #include "Abilities/Tasks/AbilityTask_PlayMontageAndWait.h"
 
+UGLPrimaryAbility::UGLPrimaryAbility()
+{
+	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
+	NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalPredicted;
+}
+
 void UGLPrimaryAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, 
 	const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -48,24 +54,6 @@ void UGLPrimaryAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 		WaitEventTask->Activate();
 		WaitEventTask->EventReceived.AddDynamic(this, &ThisClass::OnGameplayEventReceived);
 	}
-}
-
-void UGLPrimaryAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-	const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
-{
-	if (WaitEventTask)
-	{
-		WaitEventTask->EndTask();
-		WaitEventTask = nullptr;
-	}
-
-	if (MontageTask)
-	{
-		MontageTask->EndTask();
-		MontageTask = nullptr;
-	}
-	
-	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
 TArray<AActor*> UGLPrimaryAbility::HitBoxOverlapTest()
@@ -130,6 +118,21 @@ void UGLPrimaryAbility::ApplyDamageEffectToActors(const TArray<AActor*>& HitActo
 	}
 	
 	ApplyGameplayEffectSpecToTarget(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, EffectSpecHandle, TargetData);
+}
+
+void UGLPrimaryAbility::ClearOngoingTasks()
+{
+	if (WaitEventTask)
+	{
+		WaitEventTask->EndTask();
+		WaitEventTask = nullptr;
+	}
+
+	if (MontageTask)
+	{
+		MontageTask->EndTask();
+		MontageTask = nullptr;
+	}
 }
 
 void UGLPrimaryAbility::DrawHitBoxOverlapDebugs(const TArray<FOverlapResult>& OverlapResults, const FVector& HitBoxLocation) const

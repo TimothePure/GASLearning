@@ -9,6 +9,8 @@ namespace GLTags
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Primary, "GLTags.GLAbilities.Primary", "Tag for the Primary Ability");
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Secondary, "GLTags.GLAbilities.Secondary", "Tag for the Secondary Ability");
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Tertiary, "GLTags.GLAbilities.Tertiary", "Tag for the Tertiary Ability");
+		
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Death, "GLTags.GLAbilities.Death", "Tag for the Death Ability");
 	}
 	
 	namespace Events
