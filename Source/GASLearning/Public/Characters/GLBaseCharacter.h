@@ -38,6 +38,9 @@ protected:
 	
 	void OnHealthChanged(const FOnAttributeChangeData& AttributeChangeData);
 	virtual void HandleDeath();
+	
+	void ResetAttributes() const;
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
@@ -45,6 +48,8 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Effects")
 	TSubclassOf<UGameplayEffect> InitializeAttributesEffect;
 	
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	TSubclassOf<UGameplayEffect> ResetAttributesEffect;
 	
 	UPROPERTY(BlueprintReadOnly, Replicated, meta = (AllowPrivateAccess = true))
 	bool bAlive = true;

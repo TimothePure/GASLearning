@@ -23,6 +23,8 @@ protected:
 	
 	UFUNCTION()
 	void OnMontageFinished();
+	
+	void RespawnCharacter();
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Animation")
@@ -30,4 +32,7 @@ private:
 
 	UPROPERTY()
 	class UAbilityTask_PlayMontageAndWait* MontageTask;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Effects")
+	TSubclassOf<UGameplayEffect> DeathEffect;
 };

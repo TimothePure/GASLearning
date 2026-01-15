@@ -24,4 +24,9 @@ namespace GLTags
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(Primary, "GLTags.Events.Player.Primary", "Tag for the player Primary attack Event");
 		}
 	}
+	
+	namespace Status
+	{
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(Dead, "GLTags.Status.Dead", "Tag for the dead status of a character.");
+	}
 }

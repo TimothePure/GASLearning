@@ -4,6 +4,7 @@
 #include "GASLearning/Public/Characters/GLBaseCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "GameFramework/GameModeBase.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -69,6 +70,20 @@ void AGLBaseCharacter::HandleDeath()
 	}
 }
 
+void AGLBaseCharacter::ResetAttributes() const
+{
+	checkf(IsValid(ResetAttributesEffect), TEXT("ResetAttributesEffect not set."));
+	
+	FGameplayEffectContextHandle EffectContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	FGameplayEffectSpecHandle EffectSpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(ResetAttributesEffect, 1.f, EffectContextHandle);
+	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+}
+
 void AGLBaseCharacter::HandleRespawn()
 {
+	if (HasAuthority())
+	{
+		ResetAttributes(); 
+		SetActorLocation(GetWorld()->GetAuthGameMode()->ChoosePlayerStart(GetController())->GetActorLocation());
+	}
 }

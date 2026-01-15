@@ -23,9 +23,6 @@ void UGLAttributeChangedTask::EndTask()
 	{
 		ASC->GetGameplayAttributeValueChangeDelegate(AttributeToListenFor).RemoveAll(this);
 	}
-	
-	SetReadyToDestroy();
-	MarkAsGarbage();
 }
 
 void UGLAttributeChangedTask::AttributeChanged(const FOnAttributeChangeData& Data)
