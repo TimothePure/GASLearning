@@ -15,6 +15,8 @@ namespace GLTags
 	
 	namespace Events
 	{
+		  UE_DEFINE_GAMEPLAY_TAG_COMMENT(KillScored, "GLTags.Events.KillScored", "Tag for the KillScored Event");
+		
 		namespace Enemy
 		{
 			UE_DEFINE_GAMEPLAY_TAG_COMMENT(HitReact, "GLTags.Events.Enemy.HitReact", "Tag for the enemy HitReact Event");
