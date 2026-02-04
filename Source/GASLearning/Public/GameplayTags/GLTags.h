@@ -29,4 +29,9 @@ namespace GLTags
 			UE_DECLARE_GAMEPLAY_TAG_EXTERN(Primary);
 		}
 	}
+	
+	namespace Status
+	{
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(Dead);
+	}
 }

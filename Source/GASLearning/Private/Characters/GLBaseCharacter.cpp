@@ -81,6 +81,7 @@ void AGLBaseCharacter::ResetAttributes() const
 
 void AGLBaseCharacter::HandleRespawn()
 {
+	bAlive = true;
 	if (HasAuthority())
 	{
 		ResetAttributes(); 

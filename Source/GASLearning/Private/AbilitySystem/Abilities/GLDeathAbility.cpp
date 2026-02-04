@@ -51,7 +51,7 @@ void UGLDeathAbility::OnMontageFinished()
 
 void UGLDeathAbility::RespawnCharacter()
 {
-	BP_RemoveGameplayEffectFromOwnerWithGrantedTags(FGameplayTagContainer(GLTags::GLAbilities::Death), 1);
+	BP_RemoveGameplayEffectFromOwnerWithGrantedTags(FGameplayTagContainer(GLTags::Status::Dead), 1);
 	
 	if (AGLBaseCharacter* BaseCharacter = Cast<AGLBaseCharacter>(GetAvatarActorFromActorInfo()))
 	{
