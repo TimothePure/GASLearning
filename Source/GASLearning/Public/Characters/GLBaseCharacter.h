@@ -8,6 +8,11 @@
 #include "GameFramework/Character.h"
 #include "GLBaseCharacter.generated.h"
 
+namespace GLTags
+{
+	extern GASLEARNING_API const FName Player;
+}
+
 class UGameplayAbility;
 class UAbilitySystemComponent;
 class UGameplayEffect;

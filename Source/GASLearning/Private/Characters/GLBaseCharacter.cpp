@@ -7,6 +7,10 @@
 #include "GameFramework/GameModeBase.h"
 #include "Net/UnrealNetwork.h"
 
+namespace GLTags
+{
+	const FName Player = FName("Player");
+}
 
 AGLBaseCharacter::AGLBaseCharacter()
 {
