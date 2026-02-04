@@ -19,6 +19,16 @@ public:
 	AGLEnemyCharacter();
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual UAttributeSet* GetAttributeSet() const override;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI")
+	float AcceptanceRadius = 500.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI")
+	float MinAttackDelay = 0.1f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI")
+	float MaxAttackDelay = 0.5f;
+
 protected:
 	virtual void BeginPlay() override;
 

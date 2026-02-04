@@ -6,6 +6,8 @@
 #include "AbilitySystem/Abilities/GLGameplayAbility.h"
 #include "GLSearchForTargetAbility.generated.h"
 
+class AAIController;
+class AGLEnemyCharacter;
 /**
  * 
  */
@@ -17,5 +19,21 @@ public:
 	UGLSearchForTargetAbility();
 	
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+protected:
+	virtual void ClearOngoingTasks() override;
 	
+	void StartSearch();
+	
+	UFUNCTION()
+	void SearchAndMoveToClosestTarget();
+	
+private:
+	UPROPERTY(VisibleAnywhere)
+	AGLEnemyCharacter* OwningEnemy;
+	
+	UPROPERTY(VisibleAnywhere)
+	AAIController* OwningAIController;
+	
+	UPROPERTY()
+	class UAbilityTask_WaitDelay* WaitTask;
 };
